@@ -4,7 +4,7 @@ let make =
     (
       ~disabled: option(bool)=?,
       ~onTintColor: option(string)=?,
-      ~onValueChange: option((bool => unit))=?,
+      ~onValueChange: option(bool => unit)=?,
       ~thumbTintColor: option(string)=?,
       ~tintColor: option(string)=?,
       ~value: option(bool)=?,

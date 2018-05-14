@@ -96,6 +96,8 @@ let marginRight: float => style;
 
 let marginTop: float => style;
 
+let marginTopInterpolated: AnimatedRe.Interpolation.t => style;
+
 let marginVertical: float => style;
 
 let maxHeight: float => style;
@@ -247,9 +249,15 @@ let borderLeftColor: string => style;
 
 let borderRadius: float => style;
 
+let borderRadiusInterpolated: AnimatedRe.Interpolation.t => style;
+
 let borderTopLeftRadius: float => style;
 
+let borderTopLeftRadiusInterpolated: AnimatedRe.Interpolation.t => style;
+
 let borderTopRightRadius: float => style;
+
+let borderTopRightRadiusInterpolated: AnimatedRe.Interpolation.t => style;
 
 let borderBottomLeftRadius: float => style;
 

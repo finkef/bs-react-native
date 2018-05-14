@@ -50,6 +50,7 @@ let make:
     ~extraData: 'any=?,
     ~getItemLayout: (option(array('item)), int) => {. "length": int, "offset": int, "index": int}=?,
     ~horizontal: bool=?,
+    ~inverted: bool=?,
     ~initialNumToRender: int=?,
     ~initialScrollIndex: int=?,
     ~numColumns: 'int=?,

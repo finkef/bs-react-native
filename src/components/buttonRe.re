@@ -1,6 +1,15 @@
-[@bs.module "react-native"] external button : ReasonReact.reactClass = "Button";
+[@bs.module "react-native"]
+external button : ReasonReact.reactClass = "Button";
 
-let make = (~accessibilityLabel=?, ~color=?, ~disabled=?, ~onPress=?, ~testID=?, ~title=?) =>
+let make =
+    (
+      ~accessibilityLabel=?,
+      ~color=?,
+      ~disabled=?,
+      ~onPress=?,
+      ~testID=?,
+      ~title=?
+    ) =>
   ReasonReact.wrapJsForReason(
     ~reactClass=button,
     ~props=

@@ -65,6 +65,7 @@ module Value: {
   let add: (value, value) => value;
   let divide: (value, value) => value;
   let multiply: (value, value) => value;
+  let fromInterpolation: Interpolation.t => value;
   module Timing: {
     type config;
     let animate:

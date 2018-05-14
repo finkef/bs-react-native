@@ -1,8 +1,9 @@
-[@bs.module "react-native"] external view : ReasonReact.reactClass = "RefreshControl";
+[@bs.module "react-native"]
+external view : ReasonReact.reactClass = "RefreshControl";
 
 let make =
     (
-      ~onRefresh: option((unit => unit))=?,
+      ~onRefresh: option(unit => unit)=?,
       ~refreshing: option(bool)=?,
       ~colors: option(array(string))=?,
       ~enabled: option(bool)=?,
