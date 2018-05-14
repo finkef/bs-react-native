@@ -87,7 +87,6 @@ module Value: {
   let add: (value, value) => value;
   let divide: (value, value) => value;
   let multiply: (value, value) => value;
-  let fromInterpolation: Interpolation.t => value;
   module Timing: {
     type config;
     let animate:
@@ -149,10 +148,22 @@ module Value: {
 
 module ValueXY: {
   type t;
-  type jsValue = {. "x": float, "y": float};
+  type jsValue = {
+    .
+    "x": float,
+    "y": float,
+  };
   type callback = jsValue => unit;
-  type translateTransform = {. "translateX": Value.t, "translateY": Value.t};
-  type layout = {. "left": Value.t, "top": Value.t};
+  type translateTransform = {
+    .
+    "translateX": Value.t,
+    "translateY": Value.t,
+  };
+  type layout = {
+    .
+    "left": Value.t,
+    "top": Value.t,
+  };
   let create: (~x: float, ~y: float) => t;
   let setValue: (t, ~x: float, ~y: float) => unit;
   let setOffset: (t, ~x: float, ~y: float) => unit;
@@ -239,13 +250,16 @@ let delay: float => CompositeAnimation.t;
 let sequence: array(CompositeAnimation.t) => CompositeAnimation.t;
 
 let parallel:
-  (array(CompositeAnimation.t), {. "stopTogether": Js.boolean}) => CompositeAnimation.t;
+  (array(CompositeAnimation.t), {. "stopTogether": Js.boolean}) =>
+  CompositeAnimation.t;
 
 let stagger: (float, array(CompositeAnimation.t)) => CompositeAnimation.t;
 
-let loop: (~iterations: int=?, ~animation: CompositeAnimation.t, unit) => CompositeAnimation.t;
+let loop:
+  (~iterations: int=?, ~animation: CompositeAnimation.t, unit) =>
+  CompositeAnimation.t;
 
-let createAnimatedComponent : ReasonReact.reactClass => ReasonReact.reactClass;
+let createAnimatedComponent: ReasonReact.reactClass => ReasonReact.reactClass;
 
 module Timing = Value.Timing;
 

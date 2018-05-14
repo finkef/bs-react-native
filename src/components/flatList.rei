@@ -12,30 +12,40 @@ let scrollToIndex:
   unit;
 
 let scrollToItem:
-  (ReasonReact.reactRef, ~item: 'item, ~animated: Js.boolean=?, ~viewPosition: int=?, unit) => unit;
+  (
+    ReasonReact.reactRef,
+    ~item: 'item,
+    ~animated: Js.boolean=?,
+    ~viewPosition: int=?,
+    unit
+  ) =>
+  unit;
 
-let scrollToOffset: (ReasonReact.reactRef, ~offset: int=?, ~animated: Js.boolean=?, unit) => unit;
+let scrollToOffset:
+  (ReasonReact.reactRef, ~offset: int=?, ~animated: Js.boolean=?, unit) => unit;
 
 [@bs.send] external recordInteraction : ReasonReact.reactRef => unit = "";
 
 type renderBag('item) = {
   item: 'item,
-  index: int
+  index: int,
 };
 
 type renderItem('item);
 
-let renderItem: (renderBag('item) => ReasonReact.reactElement) => renderItem('item);
+let renderItem:
+  (renderBag('item) => ReasonReact.reactElement) => renderItem('item);
 
 type separatorComponent('item);
 
 type separatorProps('item) = {
   highlighted: bool,
-  leadingItem: option('item)
+  leadingItem: option('item),
 };
 
 let separatorComponent:
-  (separatorProps('item) => ReasonReact.reactElement) => separatorComponent('item);
+  (separatorProps('item) => ReasonReact.reactElement) =>
+  separatorComponent('item);
 
 let make:
   (
@@ -48,9 +58,15 @@ let make:
     ~listHeaderComponent: ReasonReact.reactElement=?,
     ~columnWrapperStyle: Style.t=?,
     ~extraData: 'any=?,
-    ~getItemLayout: (option(array('item)), int) => {. "length": int, "offset": int, "index": int}=?,
+    ~getItemLayout: (option(array('item)), int) =>
+                    {
+                      .
+                      "length": int,
+                      "offset": int,
+                      "index": int,
+                    }
+                      =?,
     ~horizontal: bool=?,
-    ~inverted: bool=?,
     ~initialNumToRender: int=?,
     ~initialScrollIndex: int=?,
     ~inverted: bool=?,
@@ -68,8 +84,8 @@ let make:
                                      "key": string,
                                      "index": Js.undefined(int),
                                      "isViewable": Js.boolean,
-                                     "section": Js.t({.})
-                                   }
+                                     "section": Js.t({.}),
+                                   },
                                  ),
                                "changed":
                                  array(
@@ -79,9 +95,9 @@ let make:
                                      "key": string,
                                      "index": Js.undefined(int),
                                      "isViewable": Js.boolean,
-                                     "section": Js.t({.})
-                                   }
-                                 )
+                                     "section": Js.t({.}),
+                                   },
+                                 ),
                              }
                                =?,
     ~overScrollMode: [ | `auto | `always | `never]=?,
@@ -98,4 +114,8 @@ let make:
     ~style: Style.t=?,
     array(ReasonReact.reactElement)
   ) =>
-  ReasonReact.component(ReasonReact.stateless, ReasonReact.noRetainedProps, unit);
+  ReasonReact.component(
+    ReasonReact.stateless,
+    ReasonReact.noRetainedProps,
+    unit,
+  );
