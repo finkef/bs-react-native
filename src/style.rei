@@ -279,11 +279,11 @@ let borderBottomColor: string_interpolated => styleElement;
 
 let borderLeftColor: string_interpolated => styleElement;
 
-let borderRadius: float => styleElement;
+let borderRadius: float_interpolated_animated => styleElement;
 
-let borderTopLeftRadius: float => styleElement;
+let borderTopLeftRadius: float_interpolated_animated => styleElement;
 
-let borderTopRightRadius: float => styleElement;
+let borderTopRightRadius: float_interpolated_animated => styleElement;
 
 type borderStyle =
   | Solid
@@ -292,9 +292,9 @@ type borderStyle =
 
 let borderStyle: borderStyle => styleElement;
 
-let borderBottomLeftRadius: float => styleElement;
+let borderBottomLeftRadius: float_interpolated_animated => styleElement;
 
-let borderBottomRightRadius: float => styleElement;
+let borderBottomRightRadius: float_interpolated_animated => styleElement;
 
 let opacity: float_interpolated_animated => styleElement;
 

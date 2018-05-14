@@ -532,15 +532,30 @@ let borderLeftColor = value => (
   encode_string_interpolated(value),
 );
 
-let borderRadius = floatStyle("borderRadius");
+let borderRadius = value => (
+  "borderRadius",
+  encode_float_interpolated_animated(value),
+);
 
-let borderTopLeftRadius = floatStyle("borderTopLeftRadius");
+let borderTopLeftRadius = value => (
+  "borderTopLeftRadius",
+  encode_float_interpolated_animated(value),
+);
 
-let borderTopRightRadius = floatStyle("borderTopRightRadius");
+let borderTopRightRadius = value => (
+  "borderTopRightRadius",
+  encode_float_interpolated_animated(value),
+);
 
-let borderBottomLeftRadius = floatStyle("borderBottomLeftRadius");
+let borderBottomLeftRadius = value => (
+  "borderBottomLeftRadius",
+  encode_float_interpolated_animated(value),
+);
 
-let borderBottomRightRadius = floatStyle("borderBottomRightRadius");
+let borderBottomRightRadius = value => (
+  "borderBottomRightRadius",
+  encode_float_interpolated_animated(value),
+);
 
 type borderStyle =
   | Solid
