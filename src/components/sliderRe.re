@@ -4,8 +4,8 @@ type rawImageSourceJS;
 
 external rawImageSourceJS : 'a => rawImageSourceJS = "%identity";
 
-let convertImageSource = (src) =>
-  switch src {
+let convertImageSource = src =>
+  switch (src) {
   | ImageRe.Image.Multiple(x) => rawImageSourceJS(Array.of_list(x))
   | ImageRe.Image.URI(x) => rawImageSourceJS(x)
   | ImageRe.Image.Required(x) => rawImageSourceJS(x)
@@ -18,8 +18,8 @@ let make =
       ~maximumValue: option(float)=?,
       ~minimumTrackTintColor: option(string)=?,
       ~minimumValue: option(float)=?,
-      ~onSlidingComplete: option((float => unit))=?,
-      ~onValueChange: option((float => unit))=?,
+      ~onSlidingComplete: option(float => unit)=?,
+      ~onValueChange: option(float => unit)=?,
       ~step: option(float)=?,
       ~value: option(float)=?,
       ~thumbTintColor: option(string)=?,
@@ -65,11 +65,17 @@ let make =
             "value": from_opt(value),
             "thumbTintColor": from_opt(thumbTintColor),
             "maximumTrackImage":
-              from_opt(UtilsRN.option_map(convertImageSource, maximumTrackImage)),
+              from_opt(
+                UtilsRN.option_map(convertImageSource, maximumTrackImage)
+              ),
             "minimumTrackImage":
-              from_opt(UtilsRN.option_map(convertImageSource, minimumTrackImage)),
-            "thumbImage": from_opt(UtilsRN.option_map(convertImageSource, thumbImage)),
-            "trackImage": from_opt(UtilsRN.option_map(convertImageSource, trackImage))
+              from_opt(
+                UtilsRN.option_map(convertImageSource, minimumTrackImage)
+              ),
+            "thumbImage":
+              from_opt(UtilsRN.option_map(convertImageSource, thumbImage)),
+            "trackImage":
+              from_opt(UtilsRN.option_map(convertImageSource, trackImage))
           }
         ),
         ~accessibilityLabel?,

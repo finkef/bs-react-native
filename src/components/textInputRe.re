@@ -1,10 +1,15 @@
-[@bs.module "react-native"] external view : ReasonReact.reactClass = "TextInput";
+[@bs.module "react-native"]
+external view : ReasonReact.reactClass = "TextInput";
 
 [@bs.send] external _isFocused : ReasonReact.reactRef => Js.boolean = "";
 
 let isFocused = UtilsRN.(Js.to_bool << _isFocused);
 
 [@bs.send] external clear : ReasonReact.reactRef => unit = "";
+
+[@bs.send] external blur : ReasonReact.reactRef => unit = "";
+
+[@bs.send] external focus : ReasonReact.reactRef => unit = "";
 
 let make =
     (
@@ -80,8 +85,8 @@ let make =
             "autoCapitalize":
               from_opt(
                 UtilsRN.option_map(
-                  (x) =>
-                    switch x {
+                  x =>
+                    switch (x) {
                     | `none => "none"
                     | `sentences => "sentences"
                     | `words => "words"
@@ -92,15 +97,16 @@ let make =
               ),
             "autoCorrect": from_opt(UtilsRN.optBoolToOptJsBoolean(autoCorrect)),
             "autoFocus": from_opt(UtilsRN.optBoolToOptJsBoolean(autoFocus)),
-            "blurOnSubmit": from_opt(UtilsRN.optBoolToOptJsBoolean(blurOnSubmit)),
+            "blurOnSubmit":
+              from_opt(UtilsRN.optBoolToOptJsBoolean(blurOnSubmit)),
             "caretHidden": from_opt(UtilsRN.optBoolToOptJsBoolean(caretHidden)),
             "defaultValue": from_opt(defaultValue),
             "editable": from_opt(UtilsRN.optBoolToOptJsBoolean(editable)),
             "keyboardType":
               from_opt(
                 UtilsRN.option_map(
-                  (x) =>
-                    switch x {
+                  x =>
+                    switch (x) {
                     | `default => "default"
                     | `emailAddress => "email-address"
                     | `numeric => "numeric"
@@ -133,8 +139,8 @@ let make =
             "returnKeyType":
               from_opt(
                 UtilsRN.option_map(
-                  (x) =>
-                    switch x {
+                  x =>
+                    switch (x) {
                     | `done_ => "done_"
                     | `go => "go"
                     | `next => "next"
@@ -152,12 +158,15 @@ let make =
                   returnKeyType
                 )
               ),
-            "secureTextEntry": from_opt(UtilsRN.optBoolToOptJsBoolean(secureTextEntry)),
-            "selectTextOnFocus": from_opt(UtilsRN.optBoolToOptJsBoolean(selectTextOnFocus)),
+            "secureTextEntry":
+              from_opt(UtilsRN.optBoolToOptJsBoolean(secureTextEntry)),
+            "selectTextOnFocus":
+              from_opt(UtilsRN.optBoolToOptJsBoolean(selectTextOnFocus)),
             "selection": from_opt(selection),
             "selectionColor": from_opt(selectionColor),
             "value": from_opt(value),
-            "disableFullscreenUI": from_opt(UtilsRN.optBoolToOptJsBoolean(disableFullscreenUI)),
+            "disableFullscreenUI":
+              from_opt(UtilsRN.optBoolToOptJsBoolean(disableFullscreenUI)),
             /* TODO */
             "inlineImageLeft": from_opt(inlineImageLeft),
             "inlineImagePadding": from_opt(inlineImagePadding),
@@ -166,8 +175,8 @@ let make =
             "textBreakStrategy":
               from_opt(
                 UtilsRN.option_map(
-                  (x) =>
-                    switch x {
+                  x =>
+                    switch (x) {
                     | `simple => "simple"
                     | `highQuality => "highQuality"
                     | `balanced => "balanced"
@@ -179,8 +188,8 @@ let make =
             "clearButtonMode":
               from_opt(
                 UtilsRN.option_map(
-                  (x) =>
-                    switch x {
+                  x =>
+                    switch (x) {
                     | `never => "never"
                     | `whileEditing => "whileEditing"
                     | `unlessEditing => "unless-editing"
@@ -189,30 +198,32 @@ let make =
                   clearButtonMode
                 )
               ),
-            "clearTextOnFocus": from_opt(UtilsRN.optBoolToOptJsBoolean(clearTextOnFocus)),
+            "clearTextOnFocus":
+              from_opt(UtilsRN.optBoolToOptJsBoolean(clearTextOnFocus)),
             "dataDetectorTypes":
               from_opt(
                 UtilsRN.option_map(
-                  Array.map(
-                    (x) =>
-                      switch x {
-                      | `phoneNumber => "phoneNumber"
-                      | `link => "link"
-                      | `calendarEvent => "calendarEvent"
-                      | `none => "none"
-                      | `all => "all"
-                      }
+                  Array.map(x =>
+                    switch (x) {
+                    | `phoneNumber => "phoneNumber"
+                    | `link => "link"
+                    | `calendarEvent => "calendarEvent"
+                    | `none => "none"
+                    | `all => "all"
+                    }
                   ),
                   dataDetectorTypes
                 )
               ),
             "enablesReturnKeyAutomatically":
-              from_opt(UtilsRN.optBoolToOptJsBoolean(enablesReturnKeyAutomatically)),
+              from_opt(
+                UtilsRN.optBoolToOptJsBoolean(enablesReturnKeyAutomatically)
+              ),
             "keyboardAppearance":
               from_opt(
                 UtilsRN.option_map(
-                  (x) =>
-                    switch x {
+                  x =>
+                    switch (x) {
                     | `default => "never"
                     | `light => "light"
                     | `dark => "dark"

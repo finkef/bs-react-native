@@ -20,6 +20,10 @@ module NativeScrollEvent: {
     x: float,
     y: float
   };
+  type velocity = {
+    vx: float,
+    vy: float
+  };
   type size = {
     width: float,
     height: float
@@ -34,6 +38,7 @@ module NativeScrollEvent: {
   let contentSize: t => size;
   let contentInset: t => contentInset;
   let layoutMeasurement: t => size;
+  let velocity: t => velocity;
 };
 
 module NativeLayoutEvent: {
