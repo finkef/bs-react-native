@@ -3,7 +3,7 @@ type item = {
   displayName: string,
   title: string,
   description: string,
-  examples: array(Example.t)
+  examples: array(Example.t),
 };
 
 module type ExampleT = {
@@ -14,12 +14,12 @@ module type ExampleT = {
 };
 
 module MakeExample = (Example: ExampleT) => {
-  let item = (key) => {
+  let item = key => {
     key,
     displayName: Example.displayName,
     title: Example.title,
     description: Example.description,
-    examples: Example.examples
+    examples: Example.examples,
   };
 };
 
@@ -31,9 +31,15 @@ module WebView = MakeExample(WebViewExample);
 
 module ImageBackground = MakeExample(ImageBackgroundExample);
 
+module NetInfo = MakeExample(NetInfoExample);
+
+module Geolocation = MakeExample(GeolocationExample);
+
 let components: array(item) = [|
   Button.item("ButtonExample"),
   View.item("ViewExample"),
   WebView.item("WebViewExample"),
-  ImageBackground.item("ImageBackground")
+  ImageBackground.item("ImageBackground"),
+  NetInfo.item("NetInfo"),
+  Geolocation.item("Geolocation"),
 |];

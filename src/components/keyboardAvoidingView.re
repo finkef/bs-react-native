@@ -1,54 +1,67 @@
+[@bs.deriving jsConverter]
+type behavior = [ | `height | `position | `padding];
+
 [@bs.module "react-native"]
 external keyboardAvoidingView : ReasonReact.reactClass =
   "KeyboardAvoidingView";
 
-type make =
-  (
-    ~accessibilityLabel: string=?,
-    ~behavior: [ | `padding | `height | `position]=?,
-    ~testID: string=?,
-    ~keyboardVerticalOffset: float=?,
-    ~contentContainerStyle: StyleRe.t=?,
-    ~style: StyleRe.t=?,
-    array(ReasonReact.reactElement)
-  ) =>
-  ReasonReact.component(
-    ReasonReact.stateless,
-    ReasonReact.noRetainedProps,
-    unit
-  );
-
-let make: make =
-  (
-    ~accessibilityLabel=?,
-    ~behavior=?,
-    ~testID=?,
-    ~keyboardVerticalOffset=?,
-    ~contentContainerStyle=?,
-    ~style=?
-  ) =>
-    ReasonReact.wrapJsForReason(
-      ~reactClass=keyboardAvoidingView,
-      ~props=
-        Js.Undefined.(
+let make =
+    (
+      ~accessibilityLabel=?,
+      ~accessible=?,
+      ~hitSlop=?,
+      ~onAccessibilityTap=?,
+      ~onLayout=?,
+      ~onMagicTap=?,
+      ~responderHandlers=?,
+      ~pointerEvents=?,
+      ~removeClippedSubviews=?,
+      ~style=?,
+      ~testID=?,
+      ~accessibilityComponentType=?,
+      ~accessibilityLiveRegion=?,
+      ~collapsable=?,
+      ~importantForAccessibility=?,
+      ~needsOffscreenAlphaCompositing=?,
+      ~renderToHardwareTextureAndroid=?,
+      ~accessibilityTraits=?,
+      ~accessibilityViewIsModal=?,
+      ~shouldRasterizeIOS=?,
+      ~keyboardVerticalOffset=?,
+      ~behavior=?,
+      ~contentContainerStyle=?,
+    ) =>
+  ReasonReact.wrapJsForReason(
+    ~reactClass=keyboardAvoidingView,
+    ~props=
+      Js.Undefined.(
+        Props.extendView(
+          ~accessibilityLabel?,
+          ~accessible?,
+          ~hitSlop?,
+          ~onAccessibilityTap?,
+          ~onLayout?,
+          ~onMagicTap?,
+          ~responderHandlers?,
+          ~pointerEvents?,
+          ~removeClippedSubviews?,
+          ~style?,
+          ~testID?,
+          ~accessibilityComponentType?,
+          ~accessibilityLiveRegion?,
+          ~collapsable?,
+          ~importantForAccessibility?,
+          ~needsOffscreenAlphaCompositing?,
+          ~renderToHardwareTextureAndroid?,
+          ~accessibilityTraits?,
+          ~accessibilityViewIsModal?,
+          ~shouldRasterizeIOS?,
           {
-            "accessibilityLabel": from_opt(accessibilityLabel),
-            "testID": from_opt(testID),
-            "keyboardVerticalOffset": from_opt(keyboardVerticalOffset),
-            "contentContainerStyle": from_opt(contentContainerStyle),
+            "keyboardVerticalOffset": fromOption(keyboardVerticalOffset),
             "behavior":
-              from_opt(
-                UtilsRN.option_map(
-                  x =>
-                    switch (x) {
-                    | `height => "height"
-                    | `padding => "padding"
-                    | `position => "position"
-                    },
-                  behavior
-                )
-              ),
-            "style": from_opt(style)
-          }
+              fromOption(UtilsRN.option_map(behaviorToJs, behavior)),
+            "contentContainerStyle": fromOption(contentContainerStyle),
+          },
         )
-    );
+      ),
+  );

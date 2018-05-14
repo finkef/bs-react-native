@@ -9,11 +9,37 @@ module type Value = {type t; type rawJsType;};
 module CompositeAnimation = {
   type t;
   [@bs.send]
-  external _start : (t, Js.undefined(Animation.endCallback)) => unit = "start";
+  external _start : (t, Js.undefined(Animation.endCallback)) => unit =
+    "start";
   let start = (t, ~callback=?, ()) =>
-    _start(t, Js.Undefined.from_opt(callback));
+    _start(t, Js.Undefined.fromOption(callback));
   [@bs.send] external stop : t => unit = "";
   [@bs.send] external reset : t => unit = "";
+};
+
+module Easing = {
+  type t = float => float;
+  [@bs.module "react-native"] [@bs.scope "Easing"] external bounce : t = "";
+  [@bs.module "react-native"] [@bs.scope "Easing"] external circle : t = "";
+  [@bs.module "react-native"] [@bs.scope "Easing"] external cubic : t = "";
+  [@bs.module "react-native"] [@bs.scope "Easing"] external ease : t = "";
+  [@bs.module "react-native"] [@bs.scope "Easing"] external exp : t = "";
+  [@bs.module "react-native"] [@bs.scope "Easing"] external linear : t = "";
+  [@bs.module "react-native"] [@bs.scope "Easing"] external poly : t = "";
+  [@bs.module "react-native"] [@bs.scope "Easing"] external quad : t = "";
+  [@bs.module "react-native"] [@bs.scope "Easing"] external sin : t = "";
+  [@bs.module "react-native"] [@bs.scope "Easing"] external step0 : t = "";
+  [@bs.module "react-native"] [@bs.scope "Easing"] external step1 : t = "";
+  [@bs.module "react-native"] [@bs.scope "Easing"]
+  external back : float => t = "";
+  [@bs.module "react-native"] [@bs.scope "Easing"]
+  external elastic : float => t = "";
+  [@bs.module "react-native"] [@bs.scope "Easing"] external in_ : t => t = "in";
+  [@bs.module "react-native"] [@bs.scope "Easing"]
+  external inOut : t => t = "";
+  [@bs.module "react-native"] [@bs.scope "Easing"] external out : t => t = "";
+  [@bs.module "react-native"] [@bs.scope "Easing"]
+  external bezier : (float, float, float, float) => t = "";
 };
 
 module Animations = {
@@ -42,7 +68,7 @@ module Animations = {
           ~useNativeDriver=?,
           ~onComplete=?,
           ~iterations=?,
-          ()
+          (),
         ) =>
       _decay(
         value,
@@ -52,8 +78,8 @@ module Animations = {
           ~isInteraction=?UtilsRN.optBoolToOptJsBoolean(isInteraction),
           ~useNativeDriver=?UtilsRN.optBoolToOptJsBoolean(useNativeDriver),
           ~onComplete?,
-          ~iterations?
-        )
+          ~iterations?,
+        ),
       );
   };
   module Spring = (Val: Value) => {
@@ -69,10 +95,13 @@ module Animations = {
       "speed": Js.undefined(float),
       "tension": Js.undefined(float),
       "friction": Js.undefined(float),
+      "stiffness": Js.undefined(float),
+      "mass": Js.undefined(float),
+      "damping": Js.undefined(float),
       "isInteraction": Js.undefined(Js.boolean),
       "useNativeDriver": Js.undefined(Js.boolean),
       "onComplete": Js.undefined(Animation.endCallback),
-      "iterations": Js.undefined(int)
+      "iterations": Js.undefined(int),
     };
     external toValueRaw : Val.rawJsType => toValue = "%identity";
     external toValueAnimated : Val.t => toValue = "%identity";
@@ -90,11 +119,14 @@ module Animations = {
           ~speed=?,
           ~tension=?,
           ~friction=?,
+          ~stiffness=?,
+          ~mass=?,
+          ~damping=?,
           ~isInteraction=?,
           ~useNativeDriver=?,
           ~onComplete=?,
           ~iterations=?,
-          ()
+          (),
         ) =>
       _spring(
         value,
@@ -105,20 +137,24 @@ module Animations = {
               | `raw(x) => toValueRaw(x)
               | `animated(x) => toValueAnimated(x)
               },
-            "restDisplacementThreshold": from_opt(restDisplacementThreshold),
-            "overshootClamping": from_opt(overshootClamping),
-            "restSpeedThreshold": from_opt(restSpeedThreshold),
-            "velocity": from_opt(velocity),
-            "bounciness": from_opt(bounciness),
-            "speed": from_opt(speed),
-            "tension": from_opt(tension),
-            "friction": from_opt(friction),
-            "isInteraction": from_opt(isInteraction),
-            "useNativeDriver": from_opt(useNativeDriver),
-            "onComplete": from_opt(onComplete),
-            "iterations": from_opt(iterations)
+            "restDisplacementThreshold":
+              fromOption(restDisplacementThreshold),
+            "overshootClamping": fromOption(overshootClamping),
+            "restSpeedThreshold": fromOption(restSpeedThreshold),
+            "velocity": fromOption(velocity),
+            "bounciness": fromOption(bounciness),
+            "speed": fromOption(speed),
+            "tension": fromOption(tension),
+            "friction": fromOption(friction),
+            "stiffness": fromOption(stiffness),
+            "mass": fromOption(mass),
+            "damping": fromOption(damping),
+            "isInteraction": fromOption(isInteraction),
+            "useNativeDriver": fromOption(useNativeDriver),
+            "onComplete": fromOption(onComplete),
+            "iterations": fromOption(iterations),
           }
-        )
+        ),
       );
   };
   module Timing = (Val: Value) => {
@@ -128,7 +164,7 @@ module Animations = {
     external makeConfig :
       (
         ~toValue: toValue,
-        ~easing: float => float=?,
+        ~easing: Easing.t=?,
         ~duration: float=?,
         ~delay: float=?,
         ~isInteraction: Js.boolean=?,
@@ -153,7 +189,7 @@ module Animations = {
           ~useNativeDriver=?,
           ~onComplete=?,
           ~iterations=?,
-          ()
+          (),
         ) =>
       _timing(
         value,
@@ -169,8 +205,8 @@ module Animations = {
           ~isInteraction?,
           ~useNativeDriver?,
           ~onComplete?,
-          ~iterations?
-        )
+          ~iterations?,
+        ),
       );
   };
 };
@@ -207,7 +243,7 @@ module Interpolation = {
     (
       ~inputRange: array(float),
       ~outputRange: outputRange,
-      ~easing: float => float=?,
+      ~easing: Easing.t=?,
       ~extrapolate: string=?,
       ~extrapolateLeft: string=?,
       ~extrapolateRight: string=?
@@ -224,7 +260,7 @@ module Interpolation = {
         ~extrapolate=?,
         ~extrapolateLeft=?,
         ~extrapolateRight=?,
-        ()
+        (),
       ) =>
     _interpolate(
       value,
@@ -232,7 +268,8 @@ module Interpolation = {
         ~inputRange=Array.of_list(inputRange),
         ~outputRange=
           switch (outputRange) {
-          | `string((x: list(string))) => outputRangeCreate(Array.of_list(x))
+          | `string((x: list(string))) =>
+            outputRangeCreate(Array.of_list(x))
           | `float((x: list(float))) => outputRangeCreate(Array.of_list(x))
           },
         ~easing?,
@@ -240,25 +277,22 @@ module Interpolation = {
         ~extrapolateRight=?
           UtilsRN.option_map(extrapolateString, extrapolateRight),
         ~extrapolateLeft=?
-          UtilsRN.option_map(extrapolateString, extrapolateLeft)
-      )
+          UtilsRN.option_map(extrapolateString, extrapolateLeft),
+      ),
     );
 };
 
 module Value = {
   type t;
-  type callback = float => unit;
+  type jsValue = {. "value": float};
+  type callback = jsValue => unit;
   [@bs.new] [@bs.scope "Animated"] [@bs.module "react-native"]
   external create : float => t = "Value";
   [@bs.send] external setValue : (t, float) => unit = "setValue";
   [@bs.send] external setOffset : (t, float) => unit = "setOffset";
   [@bs.send] external flattenOffset : t => unit = "flattenOffset";
   [@bs.send] external extractOffset : t => unit = "extractOffset";
-  [@bs.send]
-  external _addListener : (t, {. "value": float} => unit) => string =
-    "addListener";
-  let addListener = (value, callback) =>
-    _addListener(value, obj => callback(obj##value));
+  [@bs.send] external addListener : (t, callback) => string = "addListener";
   [@bs.send] external removeListener : (t, string) => unit = "removeListener";
   [@bs.send] external removeAllListeners : t => unit = "removeAllListeners";
   [@bs.send]
@@ -268,9 +302,9 @@ module Value = {
   external _stopAnimation : (t, Js.Undefined.t(callback)) => unit =
     "stopAnimation";
   let resetAnimation = (value, ~callback=?, ()) =>
-    _resetAnimation(value, Js.Undefined.from_opt(callback));
+    _resetAnimation(value, Js.Undefined.fromOption(callback));
   let stopAnimation = (value, ~callback=?, ()) =>
-    _stopAnimation(value, Js.Undefined.from_opt(callback));
+    _stopAnimation(value, Js.Undefined.fromOption(callback));
   [@bs.send]
   external _interpolate : (t, Interpolation.config) => Interpolation.t =
     "interpolate";
@@ -283,7 +317,7 @@ module Value = {
         ~extrapolate=?,
         ~extrapolateLeft=?,
         ~extrapolateRight=?,
-        ()
+        (),
       ) =>
     _interpolate(
       value,
@@ -300,10 +334,16 @@ module Value = {
         ~extrapolate=?
           UtilsRN.option_map(Interpolation.extrapolateString, extrapolate),
         ~extrapolateLeft=?
-          UtilsRN.option_map(Interpolation.extrapolateString, extrapolateLeft),
+          UtilsRN.option_map(
+            Interpolation.extrapolateString,
+            extrapolateLeft,
+          ),
         ~extrapolateRight=?
-          UtilsRN.option_map(Interpolation.extrapolateString, extrapolateRight)
-      )
+          UtilsRN.option_map(
+            Interpolation.extrapolateString,
+            extrapolateRight,
+          ),
+      ),
     );
   [@bs.send]
   external animate : (t, Animation.t, Animation.endCallback) => unit =
@@ -314,14 +354,13 @@ module Value = {
   external modulo : (t, float) => t = "";
   [@bs.module "react-native"] [@bs.scope "Animated"]
   external diffClamp : (t, float, float) => t = "";
-  external fromInterpolation : Interpolation.t => t = "%identity";
   type value = t;
   include
     ValueOperations(
       {
         type t = value;
         type rawJsType = float;
-      }
+      },
     );
 };
 
@@ -330,18 +369,18 @@ module ValueXY = {
   type jsValue = {
     .
     "x": float,
-    "y": float
+    "y": float,
   };
   type callback = jsValue => unit;
   type translateTransform = {
     .
     "translateX": Value.t,
-    "translateY": Value.t
+    "translateY": Value.t,
   };
   type layout = {
     .
     "left": Value.t,
-    "top": Value.t
+    "top": Value.t,
   };
   [@bs.new] [@bs.scope "Animated"] [@bs.module "react-native"]
   external _create : jsValue => t = "ValueXY";
@@ -371,7 +410,7 @@ module ValueXY = {
       {
         type t = value;
         type rawJsType = jsValue;
-      }
+      },
     );
 };
 
@@ -388,7 +427,8 @@ external parallel :
   "";
 
 [@bs.module "react-native"] [@bs.scope "Animated"]
-external stagger : (float, array(CompositeAnimation.t)) => CompositeAnimation.t =
+external stagger :
+  (float, array(CompositeAnimation.t)) => CompositeAnimation.t =
   "";
 
 [@bs.module "react-native"] [@bs.scope "Animated"]
@@ -403,6 +443,11 @@ external event : (array('a), 'b) => animatedEvent = "";
 
 let loop = (~iterations=(-1), ~animation, ()) =>
   _loop(animation, {"iterations": iterations});
+
+[@bs.module "react-native"] [@bs.scope "Animated"]
+external createAnimatedComponent :
+  ReasonReact.reactClass => ReasonReact.reactClass =
+  "";
 
 module Timing = Value.Timing;
 

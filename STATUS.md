@@ -9,7 +9,8 @@
 - [ ] DrawerLayoutAndroid
 - [x] FlatList
 - [x] Image
-- [ ] KeyboardAvoidingView
+- [x] Image Background
+- [x] KeyboardAvoidingView
 - [ ] ListView
 - [ ] MapView
 - [x] Modal
@@ -18,6 +19,7 @@
 - [ ] ProgressBarAndroid
 - [ ] ProgressViewIOS
 - [x] RefreshControl
+- [x] SafeAreaView
 - [x] ScrollView
 - [x] SectionList
 - [x] SegmentedControlIOS
@@ -42,7 +44,7 @@
 
 ## APIs
 - [ ] AccessibilityInfo
-- [ ] ActionSheetIOS
+- [x] ActionSheetIOS
 - [ ] AdSupportIOS
 - [x] Alert
 - [x] AlertIOS
@@ -51,26 +53,26 @@
 - [x] AppState
 - [x] AsyncStorage
 - [x] BackHandler
-- [ ] CameraRoll
-- [ ] Clipboard
-- [ ] DatePickerAndroid
+- [x] CameraRoll
+- [x] Clipboard
+- [x] DatePickerAndroid
 - [x] Dimensions
-- [ ] Easing
-- [ ] Geolocation
+- [x] Easing
+- [x] Geolocation
 - [ ] ImageEditor
 - [ ] ImagePickerIOS
 - [ ] ImageStore
 - [ ] InteractionManager
-- [ ] Keyboard
+- [x] Keyboard
 - [ ] LayoutAnimation
 - [ ] Linking
 - [x] NativeEventEmitter
 - [ ] NativeMethodsMixin
 - [x] NativeModules
-- [ ] NetInfo
+- [x] NetInfo
 - [x] PanResponder
 - [ ] PermissionsAndroid
-- [ ] PixelRatio
+- [x] PixelRatio
 - [x] Platform
 - [ ] PushNotificationIOS
 - [ ] Settings
@@ -83,4 +85,3 @@
 - [x] Vibration
 - [x] Layout Props
 - [x] Shadow Props
-

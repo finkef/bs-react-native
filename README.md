@@ -39,14 +39,14 @@ yarn add bs-platform reason-react bs-react-native
 ```
 
 5. Now you can build all your (so far nonexsisting) Reason in two modes:
-  - `yarn run build` performs a single build
-  - `yarn run watch` enters the watch mode
+  - `yarn build` performs a single build
+  - `yarn watch` enters the watch mode
 6. Now we come to the fun stuff! Create a new file `re/app.re` and make it look like this:
 ```reason
-open ReactNative;
+open BsReactNative;
 
 let app = () =>
-  <View style=Style.(style([flex(1.), justifyContent(`center), alignItems(`center)]))>
+  <View style=Style.(style([flex(1.), justifyContent(Center), alignItems(Center)]))>
     <Text value="Reason is awesome!" />
   </View>;
 ```
@@ -63,6 +63,13 @@ import {
 AppRegistry.registerComponent('MyAwesomeProject', () => app);
 ```
 **Note:** Make sure that the first argument to `AppRegistry.registerComponent` is **your** correct project name.
+
+If you are using `react-native-scripts`, then you will need to modify `App.js` to be like this
+```js
+import { app } from "./lib/js/re/app.js";
+
+export default app;
+```
 
 8. Now go to a new tab and start your app with `react-native run-ios` or `react-native run-android`.
 
@@ -83,27 +90,79 @@ There are some components and APIs missing. You can find an overview of the impl
 ## Style
 Since we have a proper type system we can make styles **typesafe**! Therefore styles are a little bit different declared than in JavaScript:
 ```reason
-open ReactNative;
+open BsReactNative;
 
 /* inline styles */
 <View
   style=(
     Style.style([
-      Style.flexDirection(`column),
+      Style.flexDirection(Column),
       Style.backgroundColor("#6698FF"),
-      Style.marginTop(5)
+      Style.marginTop(Pt(5.))
     ])
   )
 />;
 
 /* inline styles with a local open */
-<View style=Style.(style([flexDirection(`column), backgroundColor("#6698FF"), marginTop(5)])) />;
+<View style=Style.(style([flexDirection(Column), backgroundColor("#6698FF"), marginTop(Pt(5.))])) />;
 
 /* StyleSheets with a local open */
 let styles =
   StyleSheet.create(
-    Style.({"wrapper": style([flexDirection(`column), backgroundColor("#6698FF"), marginTop(5)])})
+    Style.({"wrapper": style([flexDirection(Column), backgroundColor("#6698FF"), marginTop(Pt(5.))])})
   );
 
 <View style=styles##wrapper />;
+```
+
+### Animations
+
+```reason
+open BsReactNative;
+
+[...]
+type state = {animatedValue: Animated.Value.t};
+let component = ReasonReact.reducerComponent("Example");
+
+initialState: () => {animatedValue: Animated.Value.create((-100.))},
+
+/* Start animation in method */
+Animated.CompositeAnimation.start(
+  Animated.Timing.animate(
+    ~value=state.animatedValue,
+    ~toValue=`raw(0.),
+    ()
+  ),
+  ()
+);
+[...]
+
+/* Styles with an animated value */
+
+<Animated.View
+  style=Style.(style([flexDirection(Column), backgroundColor("#6698FF"), top(Animated(state.animatedValue))]))
+  )
+/>;
+
+```
+
+
+## Troubleshooting
+
+### `Native module cannot be null` with create-react-native-app
+
+Currently BuckleScript can generate `import * as ReactNative from 'react-native'`, which breaks
+create-react-native-app. To get around this you can force BuckleScript to generate CommonJS
+modules instead of ES Modules using:
+
+```json
+/* bsconfig.json */
+{
+  /* ... */
+  "package-specs": [
+    {
+      "module": "commonjs"
+    }
+  ]
+}
 ```

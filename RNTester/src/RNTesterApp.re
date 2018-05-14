@@ -1,4 +1,4 @@
-open ReactNative;
+open BsReactNative;
 
 let styles =
   StyleSheet.create(
@@ -6,19 +6,35 @@ let styles =
       {
         "header":
           style([
-            height(60.),
+            height(Pt(60.)),
             borderBottomWidth(StyleSheet.hairlineWidth),
-            borderBottomColor("#96969A"),
-            backgroundColor("#F5F5F6"),
-            flexDirection(`row),
-            paddingTop(20.)
+            borderBottomColor(String("#96969A")),
+            backgroundColor(String("#F5F5F6")),
+            alignItems(Center),
+            justifyContent(Center),
+            flexDirection(Row),
           ]),
-        "headerLeft": style([]),
-        "headerCenter": style([flex(1.0), position(`absolute), top(27.), left(0.), right(0.)]),
-        "title": style([fontSize(19.), fontWeight(`_600), textAlign(`center)]),
-        "exampleContainer": style([flex(1.0)])
+        "headerLeft":
+          style([
+            position(Absolute),
+            top(Pt(0.)),
+            left(Pt(10.)),
+            bottom(Pt(0.)),
+            alignItems(Center),
+            justifyContent(Center),
+          ]),
+        "headerCenter": style([flex(1.0)]),
+        "title":
+          style([
+            fontSize(Float(19.)),
+            fontWeight(`_600),
+            textAlign(Center),
+          ]),
+        "exampleContainer": style([flex(1.0)]),
+        "appContainer":
+          style([flex(1.0), backgroundColor(String("#F5F5F6"))]),
       }
-    )
+    ),
   );
 
 let header = (~onBack=?, ~title, ()) =>
@@ -27,44 +43,65 @@ let header = (~onBack=?, ~title, ()) =>
       <Text style=styles##title> (ReasonReact.stringToElement(title)) </Text>
     </View>
     (
-      switch onBack {
+      switch (onBack) {
       | None => ReasonReact.nullElement
       | Some(onBack) =>
-        <View style=styles##headerLeft> <Button title="Back" onPress=onBack /> </View>
+        <View style=styles##headerLeft>
+          <Button title="Back" onPress=onBack />
+        </View>
       }
     )
   </View>;
 
+type action =
+  | ChangeCurrentExample(option(ExampleList.item));
+
 type state = {currentExample: option(ExampleList.item)};
 
-let component = ReasonReact.statefulComponent("RNTesterApp");
+let component = ReasonReact.reducerComponent("RNTesterApp");
 
-let make = (_children) => {
-  let onPress = (item, {ReasonReact.state}) =>
-    switch state.currentExample {
-    | None => ReasonReact.Update({currentExample: Some(item)})
-    | Some(_) => ReasonReact.Update({currentExample: None})
-    };
-  let onBack = ((), _self) => ReasonReact.Update({currentExample: None});
-  {
-    ...component,
-    initialState: () => {currentExample: None},
-    render: ({state, update}) => {
-      let components = ExampleList.components;
-      switch state.currentExample {
-      | None =>
-        <View style=styles##exampleContainer>
-          (header(~title="ReasonRNTester", ()))
-          <RNTesterExampleList components onPress=(update(onPress)) />
-        </View>
-      | Some(example) =>
-        <View style=styles##exampleContainer>
-          (header(~title=example.title, ~onBack=update(onBack), ()))
-          <RNTesterExampleContainer example />
-        </View>
-      }
-    }
-  }
+let make = _children => {
+  ...component,
+  initialState: () => {currentExample: None},
+  reducer: (action, _state) =>
+    switch (action) {
+    | ChangeCurrentExample(example) => Update({currentExample: example})
+    },
+  render: ({state, send}) => {
+    let components = ExampleList.components;
+    <SafeAreaView style=styles##appContainer>
+      (
+        switch (state.currentExample) {
+        | None =>
+          <View style=styles##exampleContainer>
+            (header(~title="ReasonRNTester", ()))
+            <RNTesterExampleList
+              components
+              onPress=(
+                item =>
+                  switch (state.currentExample) {
+                  | None => send(ChangeCurrentExample(Some(item)))
+                  | Some(_) => send(ChangeCurrentExample(None))
+                  }
+              )
+            />
+          </View>
+        | Some(example) =>
+          <View style=styles##exampleContainer>
+            (
+              header(
+                ~title=example.title,
+                ~onBack=_event => send(ChangeCurrentExample(None)),
+                (),
+              )
+            )
+            <RNTesterExampleContainer example />
+          </View>
+        }
+      )
+    </SafeAreaView>;
+  },
 };
 
-let reactClass = ReasonReact.wrapReasonForJs(~component, (_jsProps) => make([||]));
+let reactClass =
+  ReasonReact.wrapReasonForJs(~component, _jsProps => make([||]));

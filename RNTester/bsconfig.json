@@ -1,19 +1,17 @@
 {
-    "name": "bs-react-native",
-    "reason": {
-        "react-jsx": 2
-    },
-    "refmt": 3,
-    "bs-dependencies": ["reason-react"],
-    "sources": [{
-        "dir": "src",
-        "subdirs": {
-            "dir": "examples"
-        }
-    }, {
-        "dir": "react-native",
-        "subdirs": {
-            "dir": "components"
-        }
-    }]
+  "name": "react-native-tester",
+  "reason": {
+    "react-jsx": 2
+  },
+  "refmt": 3,
+  "bs-dependencies": [
+    "reason-react",
+    "../../"
+  ],
+  "sources": [
+    {
+      "dir": "src",
+      "subdirs": true
+    }
+  ]
 }
