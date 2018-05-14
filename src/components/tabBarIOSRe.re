@@ -1,6 +1,7 @@
 module Item = {
   [@bs.scope "TabBarIOS"] [@bs.module "react-native"]
-  external tabBarItemIOS : ReasonReact.reactClass = "Item";
+  external tabBarItemIOS : ReasonReact.reactClass =
+    "Item";
   let make =
       (
         ~title: option(string)=?,
@@ -44,13 +45,11 @@ module Item = {
               "badge": from_opt(badge),
               "icon": from_opt(icon),
               "onPress": from_opt(onPress),
-              "renderAsOriginal":
-                from_opt(UtilsRN.optBoolToOptJsBoolean(renderAsOriginal)),
+              "renderAsOriginal": from_opt(UtilsRN.optBoolToOptJsBoolean(renderAsOriginal)),
               "selected": from_opt(UtilsRN.optBoolToOptJsBoolean(selected)),
               "selectedIcon": from_opt(selectedIcon),
               "style": from_opt(style),
-              "isTVSelectable":
-                from_opt(UtilsRN.optBoolToOptJsBoolean(isTVSelectable))
+              "isTVSelectable": from_opt(UtilsRN.optBoolToOptJsBoolean(isTVSelectable))
             }
           ),
           ~accessibilityLabel?,
@@ -77,8 +76,7 @@ module Item = {
     );
 };
 
-[@bs.module "react-native"]
-external tabBarIOS : ReasonReact.reactClass = "TabBarIOS";
+[@bs.module "react-native"] external tabBarIOS : ReasonReact.reactClass = "TabBarIOS";
 
 let make =
     (
@@ -119,8 +117,8 @@ let make =
             "itemPositioning":
               from_opt(
                 UtilsRN.option_map(
-                  x =>
-                    switch (x) {
+                  (x) =>
+                    switch x {
                     | `fill => "fill"
                     | `center => "center"
                     | `auto => "auto"

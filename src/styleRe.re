@@ -17,22 +17,16 @@ type style =
   | ObjectStyle(string, Js.Dict.t(Js.Json.t))
   | AnimatedStyle(
       string,
-      [
-        | `value(AnimatedRe.Value.t)
-        | `interpolation(AnimatedRe.Interpolation.t)
-      ]
+      [ | `value(AnimatedRe.Value.t) | `interpolation(AnimatedRe.Interpolation.t)]
     );
 
 let combine = (a, b) => {
   let entries =
-    Array.append(
-      UtilsRN.dictEntries(style_to_dict(a)),
-      UtilsRN.dictEntries(style_to_dict(b))
-    );
-  UtilsRN.dictFromArray(entries) |> to_style;
+    Array.append(UtilsRN.dictEntries(style_to_dict(a)), UtilsRN.dictEntries(style_to_dict(b)));
+  UtilsRN.dictFromArray(entries) |> to_style
 };
 
-let concat = styles => array_to_style(Array.of_list(styles));
+let concat = (styles) => array_to_style(Array.of_list(styles));
 
 let arrayStyle = (key, value) => ArrayStyle(key, value);
 
@@ -50,39 +44,34 @@ let objectStyle = (key, value) => ObjectStyle(key, value);
 
 let animatedStyle = (key, value) => AnimatedStyle(key, `value(value));
 
-let interpolatedStyle = (key, value) =>
-  AnimatedStyle(key, `interpolation(value));
+let interpolatedStyle = (key, value) => AnimatedStyle(key, `interpolation(value));
 
 let encodeStyle =
   fun
   | ArrayStyle(key, value) => (key, Encode.array(value))
-  | BooleanStyle(key, value) => (
-      key,
-      Encode.boolean(Js.Boolean.to_js_boolean(value))
-    )
+  | BooleanStyle(key, value) => (key, Encode.boolean(Js.Boolean.to_js_boolean(value)))
   | IntStyle(key, value) => (key, Encode.int(value))
   | FloatStyle(key, value) => (key, Encode.float(value))
   | StringStyle(key, value) => (key, Encode.string(value))
   | ObjectStyle(key, value) => (key, Encode.object_(value))
   | AnimatedStyle(key, value) => (
       key,
-      switch (value) {
+      switch value {
       | `value(x) => Encode.animatedValue(x)
       | `interpolation(x) => Encode.interpolatedValue(x)
       }
     );
 
-let style = sarr =>
-  sarr |> List.map(encodeStyle) |> UtilsRN.dictFromList |> to_style;
+let style = (sarr) => sarr |> List.map(encodeStyle) |> UtilsRN.dictFromList |> to_style;
 
 
 /***
  * Layout Props
  */
-let alignContent = v =>
+let alignContent = (v) =>
   stringStyle(
     "alignContent",
-    switch (v) {
+    switch v {
     | `flexStart => "flex-start"
     | `flexEnd => "flex-end"
     | `center => "center"
@@ -92,10 +81,10 @@ let alignContent = v =>
     }
   );
 
-let alignItems = v =>
+let alignItems = (v) =>
   stringStyle(
     "alignItems",
-    switch (v) {
+    switch v {
     | `flexStart => "flex-start"
     | `flexEnd => "flex-end"
     | `center => "center"
@@ -104,10 +93,10 @@ let alignItems = v =>
     }
   );
 
-let alignSelf = v =>
+let alignSelf = (v) =>
   stringStyle(
     "alignSelf",
-    switch (v) {
+    switch v {
     | `flexStart => "flex-start"
     | `flexEnd => "flex-end"
     | `center => "center"
@@ -136,10 +125,10 @@ let bottomAnimated = animatedStyle("bottom");
 
 let bottomInterpolated = interpolatedStyle("bottom");
 
-let display = v =>
+let display = (v) =>
   stringStyle(
     "display",
-    switch (v) {
+    switch v {
     | `flex => "flex"
     | `none => "none"
     }
@@ -151,10 +140,10 @@ let flexBasis = floatStyle("flexBasis");
 
 let flexBasisPct = pctStyle("flexBasis");
 
-let flexDirection = v =>
+let flexDirection = (v) =>
   stringStyle(
     "flexDirection",
-    switch (v) {
+    switch v {
     | `row => "row"
     | `rowReverse => "row-reverse"
     | `column => "column"
@@ -166,10 +155,10 @@ let flexGrow = floatStyle("flexGrow");
 
 let flexShrink = floatStyle("flexShrink");
 
-let flexWrap = v =>
+let flexWrap = (v) =>
   stringStyle(
     "flexWrap",
-    switch (v) {
+    switch v {
     | `wrap => "wrap"
     | `nowrap => "nowrap"
     }
@@ -183,10 +172,10 @@ let heightAnimated = animatedStyle("height");
 
 let heightInterpolated = interpolatedStyle("height");
 
-let justifyContent = v =>
+let justifyContent = (v) =>
   stringStyle(
     "justifyContent",
-    switch (v) {
+    switch v {
     | `flexStart => "flex-start"
     | `flexEnd => "flex-end"
     | `center => "center"
@@ -216,8 +205,6 @@ let marginRight = floatStyle("marginRight");
 
 let marginTop = floatStyle("marginTop");
 
-let marginTopInterpolated = interpolatedStyle("marginTop");
-
 let marginVertical = floatStyle("marginVertical");
 
 let maxHeight = floatStyle("maxHeight");
@@ -236,10 +223,10 @@ let minWidth = floatStyle("minWidth");
 
 let minWidthPct = pctStyle("minWidth");
 
-let overflow = v =>
+let overflow = (v) =>
   stringStyle(
     "overflow",
-    switch (v) {
+    switch v {
     | `visible => "visible"
     | `hidden => "hidden"
     | `scroll => "scroll"
@@ -260,10 +247,10 @@ let paddingTop = floatStyle("paddingTop");
 
 let paddingVertical = floatStyle("paddingVertical");
 
-let position = v =>
+let position = (v) =>
   stringStyle(
     "position",
-    switch (v) {
+    switch v {
     | `absolute => "absolute"
     | `relative => "relative"
     }
@@ -295,10 +282,10 @@ let widthInterpolated = interpolatedStyle("width");
 
 let zIndex = intStyle("zIndex");
 
-let direction = v =>
+let direction = (v) =>
   stringStyle(
     "direction",
-    switch (v) {
+    switch v {
     | `_inherit => "inherit"
     | `ltr => "ltr"
     | `rtl => "rtl"
@@ -312,10 +299,7 @@ let direction = v =>
 let shadowColor = stringStyle("shadowColor");
 
 let shadowOffset = (~height, ~width) =>
-  UtilsRN.dictFromArray([|
-    ("height", Encode.float(height)),
-    ("width", Encode.float(width))
-  |])
+  UtilsRN.dictFromArray([|("height", Encode.float(height)), ("width", Encode.float(width))|])
   |> objectStyle("shadowOffset");
 
 let shadowOpacity = floatStyle("shadowOpacity");
@@ -356,16 +340,16 @@ let createTransformObject =
   let values =
     List.fold_right(
       (x, acc) =>
-        switch (x) {
+        switch x {
         | (key, Some(value)) =>
           let val_ = UtilsRN.dictFromArray([|(key, value)|]) |> Encode.object_;
-          [val_, ...acc];
+          [val_, ...acc]
         | _ => acc
         },
       opt_values,
       []
     );
-  Array.of_list(values) |> arrayStyle("transform");
+  Array.of_list(values) |> arrayStyle("transform")
 };
 
 let transform =
@@ -459,10 +443,10 @@ let transformInterpolated =
 /***
  * View Props
  */
-let backfaceVisibility = v =>
+let backfaceVisibility = (v) =>
   stringStyle(
     "backfaceVisibility",
-    switch (v) {
+    switch v {
     | `visible => "visible"
     | `hidden => "hidden"
     }
@@ -482,25 +466,18 @@ let borderLeftColor = stringStyle("borderLeftColor");
 
 let borderRadius = floatStyle("borderRadius");
 
-let borderRadiusInterpolated = interpolatedStyle("borderRadius");
-
 let borderTopLeftRadius = floatStyle("borderTopLeftRadius");
 
-let borderTopLeftRadiusInterpolated = interpolatedStyle("borderTopLeftRadius");
-
 let borderTopRightRadius = floatStyle("borderTopRightRadius");
-
-let borderTopRightRadiusInterpolated =
-  interpolatedStyle("borderTopRightRadius");
 
 let borderBottomLeftRadius = floatStyle("borderBottomLeftRadius");
 
 let borderBottomRightRadius = floatStyle("borderBottomRightRadius");
 
-let borderStyle = v =>
+let borderStyle = (v) =>
   stringStyle(
     "borderStyle",
-    switch (v) {
+    switch v {
     | `solid => "solid"
     | `dotted => "dotted"
     | `dashed => "dashed"
@@ -525,19 +502,19 @@ let fontFamily = stringStyle("fontFamily");
 
 let fontSize = floatStyle("fontSize");
 
-let fontStyle = v =>
+let fontStyle = (v) =>
   stringStyle(
     "fontStyle",
-    switch (v) {
+    switch v {
     | `normal => "normal"
     | `italic => "italic"
     }
   );
 
-let fontWeight = v =>
+let fontWeight = (v) =>
   stringStyle(
     "fontWeight",
-    switch (v) {
+    switch v {
     | `normal => "normal"
     | `bold => "bold"
     | `_100 => "100"
@@ -554,10 +531,10 @@ let fontWeight = v =>
 
 let lineHeight = floatStyle("lineHeight");
 
-let textAlign = v =>
+let textAlign = (v) =>
   stringStyle(
     "textAlign",
-    switch (v) {
+    switch v {
     | `auto => "auto"
     | `left => "left"
     | `right => "right"
@@ -566,10 +543,10 @@ let textAlign = v =>
     }
   );
 
-let textDecorationLine = v =>
+let textDecorationLine = (v) =>
   stringStyle(
     "textDecorationLine",
-    switch (v) {
+    switch v {
     | `none => "none"
     | `underline => "underline"
     | `lineThrough => "line-through"
@@ -580,20 +557,17 @@ let textDecorationLine = v =>
 let textShadowColor = stringStyle("textShadowColor");
 
 let textShadowOffset = (~height, ~width) =>
-  UtilsRN.dictFromArray([|
-    ("height", Encode.float(height)),
-    ("width", Encode.float(width))
-  |])
+  UtilsRN.dictFromArray([|("height", Encode.float(height)), ("width", Encode.float(width))|])
   |> objectStyle("textShadowOffset");
 
 let textShadowRadius = floatStyle("textShadowRadius");
 
 let includeFontPadding = booleanStyle("includeFontPadding");
 
-let textAlignVertical = v =>
+let textAlignVertical = (v) =>
   stringStyle(
     "textAlignVertical",
-    switch (v) {
+    switch v {
     | `auto => "auto"
     | `top => "top"
     | `bottom => "bottom"
@@ -601,20 +575,17 @@ let textAlignVertical = v =>
     }
   );
 
-let fontVariant = fontVariants =>
-  fontVariants
-  |> Array.of_list
-  |> Array.map(Encode.string)
-  |> arrayStyle("fontVariant");
+let fontVariant = (fontVariants) =>
+  fontVariants |> Array.of_list |> Array.map(Encode.string) |> arrayStyle("fontVariant");
 
 let letterSpacing = floatStyle("letterSpacing");
 
 let textDecorationColor = stringStyle("textDecorationColor");
 
-let textDecorationStyle = v =>
+let textDecorationStyle = (v) =>
   stringStyle(
     "textDecorationStyle",
-    switch (v) {
+    switch v {
     | `solid => "solid"
     | `double => "double"
     | `dotted => "dotted"
@@ -622,10 +593,10 @@ let textDecorationStyle = v =>
     }
   );
 
-let writingDirection = v =>
+let writingDirection = (v) =>
   stringStyle(
     "writingDirection",
-    switch (v) {
+    switch v {
     | `auto => "auto"
     | `ltr => "ltr"
     | `rtl => "rtl"
@@ -634,10 +605,10 @@ let writingDirection = v =>
 
 
 /*** Image props */
-let resizeMode = v =>
+let resizeMode = (v) =>
   stringStyle(
     "resizeMode",
-    switch (v) {
+    switch v {
     | `cover => "cover"
     | `contain => "contain"
     | `stretch => "stretch"

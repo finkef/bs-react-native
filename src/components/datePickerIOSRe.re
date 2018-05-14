@@ -1,8 +1,7 @@
-[@bs.module "react-native"]
-external view : ReasonReact.reactClass = "DatePickerIOS";
+[@bs.module "react-native"] external view : ReasonReact.reactClass = "DatePickerIOS";
 
-let encodeMode = prop =>
-  switch (prop) {
+let encodeMode = (prop) =>
+  switch prop {
   | `date => "date"
   | `time => "time"
   | `datetime => "datetime"

@@ -1,7 +1,6 @@
 open ImageRe;
 
-[@bs.module "react-native"]
-external view : ReasonReact.reactClass = "ImageBackground";
+[@bs.module "react-native"] external view : ReasonReact.reactClass = "ImageBackground";
 
 module Event = {
   type t;
@@ -51,8 +50,8 @@ let make =
           "resizeMode":
             from_opt(
               UtilsRN.option_map(
-                x =>
-                  switch (x) {
+                (x) =>
+                  switch x {
                   | `cover => "cover"
                   | `contain => "contain"
                   | `stretch => "stretch"
@@ -66,7 +65,7 @@ let make =
             from_opt(
               UtilsRN.option_map(
                 (x: Image.imageSource) =>
-                  switch (x) {
+                  switch x {
                   | URI(x) => rawImageSourceJS(x)
                   | Required(x) => rawImageSourceJS(x)
                   | Multiple(x) => rawImageSourceJS(Array.of_list(x))
@@ -80,8 +79,8 @@ let make =
           "resizeMethod":
             from_opt(
               UtilsRN.option_map(
-                x =>
-                  switch (x) {
+                (x) =>
+                  switch x {
                   | `auto => "auto"
                   | `resize => "resize"
                   | `scale => "scale"
@@ -97,7 +96,7 @@ let make =
             from_opt(
               UtilsRN.option_map(
                 (x: Image.defaultSource) =>
-                  switch (x) {
+                  switch x {
                   | URI(x) => rawImageSourceJS(x)
                   | Required(x) => rawImageSourceJS(x)
                   },
@@ -105,10 +104,7 @@ let make =
               )
             ),
           "onPartialLoad": from_opt(onPartialLoad),
-          "onProgress":
-            from_opt(
-              UtilsRN.option_map((x, y) => x(Event.progress(y)), onProgress)
-            )
+          "onProgress": from_opt(UtilsRN.option_map((x, y) => x(Event.progress(y)), onProgress))
         }
       )
   );

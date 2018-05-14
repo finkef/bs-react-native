@@ -1,18 +1,18 @@
 type touchResponderHandlers = {
-  onMoveShouldSetResponder: option(RNEvent.NativeEvent.t => bool),
-  onMoveShouldSetResponderCapture: option(RNEvent.NativeEvent.t => bool),
-  onResponderGrant: option(RNEvent.NativeEvent.t => unit),
-  onResponderMove: option(RNEvent.NativeEvent.t => unit),
-  onResponderReject: option(RNEvent.NativeEvent.t => unit),
-  onResponderRelease: option(RNEvent.NativeEvent.t => unit),
-  onResponderTerminate: option(RNEvent.NativeEvent.t => unit),
-  onResponderTerminationRequest: option(RNEvent.NativeEvent.t => unit),
-  onStartShouldSetResponder: option(RNEvent.NativeEvent.t => bool),
-  onStartShouldSetResponderCapture: option(RNEvent.NativeEvent.t => bool)
+  onMoveShouldSetResponder: option((RNEvent.NativeEvent.t => bool)),
+  onMoveShouldSetResponderCapture: option((RNEvent.NativeEvent.t => bool)),
+  onResponderGrant: option((RNEvent.NativeEvent.t => unit)),
+  onResponderMove: option((RNEvent.NativeEvent.t => unit)),
+  onResponderReject: option((RNEvent.NativeEvent.t => unit)),
+  onResponderRelease: option((RNEvent.NativeEvent.t => unit)),
+  onResponderTerminate: option((RNEvent.NativeEvent.t => unit)),
+  onResponderTerminationRequest: option((RNEvent.NativeEvent.t => unit)),
+  onStartShouldSetResponder: option((RNEvent.NativeEvent.t => bool)),
+  onStartShouldSetResponderCapture: option((RNEvent.NativeEvent.t => bool))
 };
 
 let serialize = (handlers: option(touchResponderHandlers)) =>
-  switch (handlers) {
+  switch handlers {
   | None => Js.Obj.empty()
   | Some(handlers) =>
     Js.Undefined.(
@@ -36,8 +36,7 @@ let serialize = (handlers: option(touchResponderHandlers)) =>
         "onResponderReject": from_opt(handlers.onResponderReject),
         "onResponderRelease": from_opt(handlers.onResponderRelease),
         "onResponderTerminate": from_opt(handlers.onResponderTerminate),
-        "onResponderTerminationRequest":
-          from_opt(handlers.onResponderTerminationRequest),
+        "onResponderTerminationRequest": from_opt(handlers.onResponderTerminationRequest),
         "onStartShouldSetResponder":
           from_opt(
             UtilsRN.option_map(
@@ -89,13 +88,12 @@ let extendView =
         "onAccessibilityTap": from_opt(onAccessibilityTap),
         "onLayout": from_opt(onLayout),
         "onMagicTap": from_opt(onMagicTap),
-        "removeClippedSubviews":
-          from_opt(UtilsRN.optBoolToOptJsBoolean(removeClippedSubviews)),
+        "removeClippedSubviews": from_opt(UtilsRN.optBoolToOptJsBoolean(removeClippedSubviews)),
         "pointerEvents":
           from_opt(
             UtilsRN.option_map(
-              x =>
-                switch (x) {
+              (x) =>
+                switch x {
                 | `auto => "auto"
                 | `none => "none"
                 | `boxNone => "box-none"
@@ -109,8 +107,8 @@ let extendView =
         "accessibilityComponentType":
           from_opt(
             UtilsRN.option_map(
-              x =>
-                switch (x) {
+              (x) =>
+                switch x {
                 | `none => "none"
                 | `button => "button"
                 | `radiobutton_checked => "radiobutton_checked-none"
@@ -122,8 +120,8 @@ let extendView =
         "accessibilityLiveRegion":
           from_opt(
             UtilsRN.option_map(
-              x =>
-                switch (x) {
+              (x) =>
+                switch x {
                 | `polite => "polite"
                 | `none => "none"
                 | `assertive => "assertive"
@@ -135,8 +133,8 @@ let extendView =
         "importantForAccessibility":
           from_opt(
             UtilsRN.option_map(
-              prop =>
-                switch (prop) {
+              (prop) =>
+                switch prop {
                 | `auto => "auto"
                 | `yes => "yes"
                 | `no => "no"
@@ -146,17 +144,13 @@ let extendView =
             )
           ),
         "needsOffscreenAlphaCompositing":
-          from_opt(
-            UtilsRN.optBoolToOptJsBoolean(needsOffscreenAlphaCompositing)
-          ),
+          from_opt(UtilsRN.optBoolToOptJsBoolean(needsOffscreenAlphaCompositing)),
         "renderToHardwareTextureAndroid":
-          from_opt(
-            UtilsRN.optBoolToOptJsBoolean(renderToHardwareTextureAndroid)
-          ),
+          from_opt(UtilsRN.optBoolToOptJsBoolean(renderToHardwareTextureAndroid)),
         "accessibilityTraits":
           from_opt(
             UtilsRN.option_map(
-              traits => {
+              (traits) => {
                 let to_string =
                   fun
                   | `none => "none"
@@ -176,15 +170,14 @@ let extendView =
                   | `adjustable => "adjustable"
                   | `allowsDirectInteraction => "allowsDirectInteraction"
                   | `pageTurn => "pageTurn";
-                traits |> List.map(to_string) |> Array.of_list;
+                traits |> List.map(to_string) |> Array.of_list
               },
               accessibilityTraits
             )
           ),
         "accessibilityViewIsModal":
           from_opt(UtilsRN.optBoolToOptJsBoolean(accessibilityViewIsModal)),
-        "shouldRasterizeIOS":
-          from_opt(UtilsRN.optBoolToOptJsBoolean(shouldRasterizeIOS))
+        "shouldRasterizeIOS": from_opt(UtilsRN.optBoolToOptJsBoolean(shouldRasterizeIOS))
       }
     ),
     moreProps,

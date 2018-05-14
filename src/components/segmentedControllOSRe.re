@@ -1,5 +1,4 @@
-[@bs.module "react-native"]
-external view : ReasonReact.reactClass = "SegmentedControlIOS";
+[@bs.module "react-native"] external view : ReasonReact.reactClass = "SegmentedControlIOS";
 
 let make =
     (

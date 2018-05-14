@@ -1,8 +1,7 @@
 [@bs.module "react-native"] external view : ReasonReact.reactClass = "Picker";
 
 module Item = {
-  [@bs.scope "Picker"] [@bs.module "react-native"]
-  external item : ReasonReact.reactClass = "Item";
+  [@bs.scope "Picker"] [@bs.module "react-native"] external item : ReasonReact.reactClass = "Item";
   let make = (~color=?, ~label=?, ~value=?, ~testID=?) =>
     ReasonReact.wrapJsForReason(
       ~reactClass=item,
@@ -18,8 +17,8 @@ module Item = {
     );
 };
 
-let encodeMode = x =>
-  switch (x) {
+let encodeMode = (x) =>
+  switch x {
   | `dialog => "dialog"
   | `dropdown => "dropdown"
   };

@@ -1,14 +1,14 @@
 [@bs.module "react-native"] external modal : ReasonReact.reactClass = "Modal";
 
-let encodeAnimationType = x =>
-  switch (x) {
+let encodeAnimationType = (x) =>
+  switch x {
   | `none => "none"
   | `slide => "slide"
   | `fade => "fade"
   };
 
-let encodeSupportedOrientations = x =>
-  switch (x) {
+let encodeSupportedOrientations = (x) =>
+  switch x {
   | `portrait => "portrait"
   | `portraitUpsideDown => "portrait-upside-down"
   | `landscape => "landscape"
@@ -32,22 +32,15 @@ let make =
     ~props=
       Js.Undefined.(
         {
-          "animationType":
-            from_opt(UtilsRN.option_map(encodeAnimationType, animationType)),
+          "animationType": from_opt(UtilsRN.option_map(encodeAnimationType, animationType)),
           "onShow": from_opt(onShow),
           "transparent": from_opt(UtilsRN.optBoolToOptJsBoolean(transparent)),
           "visible": from_opt(UtilsRN.optBoolToOptJsBoolean(visible)),
-          "hardwareAccelerated":
-            from_opt(UtilsRN.optBoolToOptJsBoolean(hardwareAccelerated)),
+          "hardwareAccelerated": from_opt(UtilsRN.optBoolToOptJsBoolean(hardwareAccelerated)),
           "onRequestClose": from_opt(onRequestClose),
           "onOrientationChange": from_opt(onOrientationChange),
           "supportedOrientations":
-            from_opt(
-              UtilsRN.option_map(
-                encodeSupportedOrientations,
-                supportedOrientations
-              )
-            )
+            from_opt(UtilsRN.option_map(encodeSupportedOrientations, supportedOrientations))
         }
       )
   );

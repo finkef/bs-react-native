@@ -20,11 +20,7 @@ module type TextComponent = {
       ~value: string=?,
       array(ReasonReact.reactElement)
     ) =>
-    ReasonReact.component(
-      ReasonReact.stateless,
-      ReasonReact.noRetainedProps,
-      unit
-    );
+    ReasonReact.component(ReasonReact.stateless, ReasonReact.noRetainedProps, unit);
 };
 
 module CreateComponent = (Impl: ViewRe.Impl) : TextComponent => {
@@ -55,8 +51,7 @@ module CreateComponent = (Impl: ViewRe.Impl) : TextComponent => {
         Js.Undefined.(
           {
             "accessible": from_opt(UtilsRN.optBoolToOptJsBoolean(accessible)),
-            "allowFontScaling":
-              from_opt(UtilsRN.optBoolToOptJsBoolean(allowFontScaling)),
+            "allowFontScaling": from_opt(UtilsRN.optBoolToOptJsBoolean(allowFontScaling)),
             "ellipsizeMode":
               from_opt(
                 UtilsRN.option_map(
@@ -87,16 +82,13 @@ module CreateComponent = (Impl: ViewRe.Impl) : TextComponent => {
                   textBreakStrategy
                 )
               ),
-            "adjustsFontSizeToFit":
-              from_opt(UtilsRN.optBoolToOptJsBoolean(adjustsFontSizeToFit)),
+            "adjustsFontSizeToFit": from_opt(UtilsRN.optBoolToOptJsBoolean(adjustsFontSizeToFit)),
             "minimumFontScale": from_opt(minimumFontScale),
-            "suppressHighlighting":
-              from_opt(UtilsRN.optBoolToOptJsBoolean(suppressHighlighting))
+            "suppressHighlighting": from_opt(UtilsRN.optBoolToOptJsBoolean(suppressHighlighting))
           }
         ),
-      switch (value) {
-      | Some(string) =>
-        Array.append([|ReasonReact.stringToElement(string)|], children)
+      switch value {
+      | Some(string) => Array.append([|ReasonReact.stringToElement(string)|], children)
       | None => children
       }
     );
@@ -105,7 +97,6 @@ module CreateComponent = (Impl: ViewRe.Impl) : TextComponent => {
 module Text =
   CreateComponent(
     {
-      [@bs.module "react-native"]
-      external view : ReasonReact.reactClass = "Text";
+      [@bs.module "react-native"] external view : ReasonReact.reactClass = "Text";
     }
   );

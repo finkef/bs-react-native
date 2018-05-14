@@ -21,8 +21,7 @@ module type ViewComponent = {
                                      =?,
       ~accessibilityLiveRegion: [ | `none | `polite | `assertive]=?,
       ~collapsable: bool=?,
-      ~importantForAccessibility: [ | `auto | `yes | `no | `noHideDescendants]
-                                    =?,
+      ~importantForAccessibility: [ | `auto | `yes | `no | `noHideDescendants]=?,
       ~needsOffscreenAlphaCompositing: bool=?,
       ~renderToHardwareTextureAndroid: bool=?,
       ~accessibilityTraits: list(
@@ -51,11 +50,7 @@ module type ViewComponent = {
       ~shouldRasterizeIOS: bool=?,
       array(ReasonReact.reactElement)
     ) =>
-    ReasonReact.component(
-      ReasonReact.stateless,
-      ReasonReact.noRetainedProps,
-      unit
-    );
+    ReasonReact.component(ReasonReact.stateless, ReasonReact.noRetainedProps, unit);
 };
 
 module type Impl = {let view: ReasonReact.reactClass;};
@@ -116,7 +111,6 @@ module CreateComponent = (Impl: Impl) : ViewComponent => {
 module View =
   CreateComponent(
     {
-      [@bs.module "react-native"]
-      external view : ReasonReact.reactClass = "View";
+      [@bs.module "react-native"] external view : ReasonReact.reactClass = "View";
     }
   );

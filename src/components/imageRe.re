@@ -20,8 +20,7 @@ module type ImageComponent = {
     | Multiple(list(imageURISource));
   type defaultURISource;
   let defaultURISource:
-    (~uri: string, ~scale: float=?, ~width: float=?, ~height: float=?, unit) =>
-    defaultURISource;
+    (~uri: string, ~scale: float=?, ~width: float=?, ~height: float=?, unit) => defaultURISource;
   type defaultSource =
     | URI(defaultURISource)
     | Required(PackagerRe.required);
@@ -53,11 +52,7 @@ module type ImageComponent = {
       ~onProgress: Event.progress => unit=?,
       array(ReasonReact.reactElement)
     ) =>
-    ReasonReact.component(
-      ReasonReact.stateless,
-      ReasonReact.noRetainedProps,
-      unit
-    );
+    ReasonReact.component(ReasonReact.stateless, ReasonReact.noRetainedProps, unit);
 };
 
 module CreateComponent = (Impl: ViewRe.Impl) : ImageComponent => {
@@ -81,8 +76,8 @@ module CreateComponent = (Impl: ViewRe.Impl) : ImageComponent => {
               [
                 | `default
                 | `reload
-                | [@bs.as "force-cache"] `forceCache
-                | [@bs.as "only-if-cached"] `onlyIfCached
+                [@bs.as "force-cache"] | `forceCache
+                [@bs.as "only-if-cached"] | `onlyIfCached
               ]
                 =?,
       ~scale: float=?,
@@ -99,8 +94,7 @@ module CreateComponent = (Impl: ViewRe.Impl) : ImageComponent => {
   type defaultURISource;
   [@bs.obj]
   external defaultURISource :
-    (~uri: string, ~scale: float=?, ~width: float=?, ~height: float=?, unit) =>
-    defaultURISource =
+    (~uri: string, ~scale: float=?, ~width: float=?, ~height: float=?, unit) => defaultURISource =
     "";
   type defaultSource =
     | URI(defaultURISource)
@@ -116,8 +110,8 @@ module CreateComponent = (Impl: ViewRe.Impl) : ImageComponent => {
     };
     [@bs.get] external progress : t => progress = "nativeEvent";
   };
-  let encodeResizeMode = x =>
-    switch (x) {
+  let encodeResizeMode = (x) =>
+    switch x {
     | `cover => "cover"
     | `contain => "contain"
     | `stretch => "stretch"
@@ -125,19 +119,19 @@ module CreateComponent = (Impl: ViewRe.Impl) : ImageComponent => {
     | `center => "center"
     };
   let encodeSource = (x: imageSource) =>
-    switch (x) {
+    switch x {
     | URI(x) => rawImageSourceJS(x)
     | Required(x) => rawImageSourceJS(x)
     | Multiple(x) => rawImageSourceJS(Array.of_list(x))
     };
-  let encodeResizeMethod = x =>
-    switch (x) {
+  let encodeResizeMethod = (x) =>
+    switch x {
     | `auto => "auto"
     | `resize => "resize"
     | `scale => "scale"
     };
   let encodeDefaultSource = (x: defaultSource) =>
-    switch (x) {
+    switch x {
     | URI(x) => rawImageSourceJS(x)
     | Required(x) => rawImageSourceJS(x)
     };
@@ -171,24 +165,18 @@ module CreateComponent = (Impl: ViewRe.Impl) : ImageComponent => {
             "onLoad": from_opt(onLoad),
             "onLoadEnd": from_opt(onLoadEnd),
             "onLoadStart": from_opt(onLoadStart),
-            "resizeMode":
-              from_opt(UtilsRN.option_map(encodeResizeMode, resizeMode)),
+            "resizeMode": from_opt(UtilsRN.option_map(encodeResizeMode, resizeMode)),
             "source": from_opt(UtilsRN.option_map(encodeSource, source)),
             "style": from_opt(style),
             "testID": from_opt(testID),
-            "resizeMethod":
-              from_opt(UtilsRN.option_map(encodeResizeMethod, resizeMethod)),
+            "resizeMethod": from_opt(UtilsRN.option_map(encodeResizeMethod, resizeMethod)),
             "accessibilityLabel": from_opt(accessibilityLabel),
             "accessible": from_opt(UtilsRN.optBoolToOptJsBoolean(accessible)),
             "blurRadius": from_opt(blurRadius),
             "capInsets": from_opt(capInsets),
-            "defaultSource":
-              from_opt(UtilsRN.option_map(encodeDefaultSource, defaultSource)),
+            "defaultSource": from_opt(UtilsRN.option_map(encodeDefaultSource, defaultSource)),
             "onPartialLoad": from_opt(onPartialLoad),
-            "onProgress":
-              from_opt(
-                UtilsRN.option_map((x, y) => x(Event.progress(y)), onProgress)
-              )
+            "onProgress": from_opt(UtilsRN.option_map((x, y) => x(Event.progress(y)), onProgress))
           }
         )
     );
@@ -197,7 +185,6 @@ module CreateComponent = (Impl: ViewRe.Impl) : ImageComponent => {
 module Image =
   CreateComponent(
     {
-      [@bs.module "react-native"]
-      external view : ReasonReact.reactClass = "Image";
+      [@bs.module "react-native"] external view : ReasonReact.reactClass = "Image";
     }
   );

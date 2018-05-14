@@ -1,9 +1,6 @@
-[@bs.module "react-native"]
-external view : ReasonReact.reactClass = "TouchableOpacity";
+[@bs.module "react-native"] external view : ReasonReact.reactClass = "TouchableOpacity";
 
-[@bs.send]
-external setOpacityTo : (ReasonReact.reactRef, float, int) => unit =
-  "setOpacityTo";
+[@bs.send] external setOpacityTo : (ReasonReact.reactRef, float, int) => unit = "setOpacityTo";
 
 let make =
     (
@@ -45,8 +42,8 @@ let make =
           "accessibilityComponentType":
             from_opt(
               UtilsRN.option_map(
-                x =>
-                  switch (x) {
+                (x) =>
+                  switch x {
                   | `none => "none"
                   | `button => "button"
                   | `radiobutton_checked => "radiobutton_checked-none"
@@ -58,7 +55,7 @@ let make =
           "accessibilityTraits":
             from_opt(
               UtilsRN.option_map(
-                traits => {
+                (traits) => {
                   let to_string =
                     fun
                     | `none => "none"
@@ -78,7 +75,7 @@ let make =
                     | `adjustable => "adjustable"
                     | `allowsDirectInteraction => "allowsDirectInteraction"
                     | `pageTurn => "pageTurn";
-                  traits |> List.map(to_string) |> Array.of_list;
+                  traits |> List.map(to_string) |> Array.of_list
                 },
                 accessibilityTraits
               )

@@ -13,8 +13,7 @@ type gestureState = {
   numberActiveTouches: int
 };
 
-[@bs.scope "PanResponder"] [@bs.module "react-native"]
-external _create : 'a => t = "create";
+[@bs.scope "PanResponder"] [@bs.module "react-native"] external _create : 'a => t = "create";
 
 type jsGestureState = {
   .
@@ -30,8 +29,7 @@ type jsGestureState = {
   "numberActiveTouches": int
 };
 
-type callback('a) =
-  ({. "nativeEvent": RNEvent.NativeEvent.t}, jsGestureState) => 'a;
+type callback('a) = ({. "nativeEvent": RNEvent.NativeEvent.t}, jsGestureState) => 'a;
 
 let callback = (x: (RNEvent.NativeEvent.t, gestureState) => 'a) : callback('a) =>
   (event, state) =>
@@ -53,28 +51,22 @@ let callback = (x: (RNEvent.NativeEvent.t, gestureState) => 'a) : callback('a) =
 
 external shamelesslyWrapCallback : 'a => callback(unit) = "%identity";
 
-let animatedEvent = l => {
+let animatedEvent = (l) => {
   let config =
     List.fold_left(
       (x, y) =>
-        switch (y) {
+        switch y {
         | `X((value: AnimatedRe.Value.t)) => Js.Obj.assign(x, {"dx": value})
         | `Y((value: AnimatedRe.Value.t)) => Js.Obj.assign(x, {"dy": value})
         | `XY(value) =>
-          Js.Obj.assign(
-            x,
-            AnimatedRe.ValueXY.({"dx": getX(value), "dy": getY(value)})
-          )
+          Js.Obj.assign(x, AnimatedRe.ValueXY.({"dx": getX(value), "dy": getY(value)}))
         },
       Js.Obj.empty(),
       l
     );
   shamelesslyWrapCallback(
-    AnimatedRe.event(
-      [|Js.null, Js.Null.return(config)|],
-      {"useNativeDriver": Js.false_}
-    )
-  );
+    AnimatedRe.event([|Js.null, Js.Null.return(config)|], {"useNativeDriver": Js.false_})
+  )
 };
 
 let create =
@@ -95,12 +87,9 @@ let create =
       ()
     ) =>
   _create({
-    "onMoveShouldSetPanResponder":
-      Js.Undefined.from_opt(onMoveShouldSetPanResponder),
-    "onMoveShouldSetPanResponderCapture":
-      Js.Undefined.from_opt(onMoveShouldSetPanResponderCapture),
-    "onStartShouldSetPanResponder":
-      Js.Undefined.from_opt(onStartShouldSetPanResponder),
+    "onMoveShouldSetPanResponder": Js.Undefined.from_opt(onMoveShouldSetPanResponder),
+    "onMoveShouldSetPanResponderCapture": Js.Undefined.from_opt(onMoveShouldSetPanResponderCapture),
+    "onStartShouldSetPanResponder": Js.Undefined.from_opt(onStartShouldSetPanResponder),
     "onStartShouldSetPanResponderCapture":
       Js.Undefined.from_opt(onStartShouldSetPanResponderCapture),
     "onPanResponderReject": Js.Undefined.from_opt(onPanResponderReject),
@@ -109,17 +98,15 @@ let create =
     "onPanResponderEnd": Js.Undefined.from_opt(onPanResponderEnd),
     "onPanResponderRelease": Js.Undefined.from_opt(onPanResponderRelease),
     "onPanResponderMove":
-      switch (onPanResponderMove) {
+      switch onPanResponderMove {
       | None => Js.undefined
       | Some(x) =>
-        switch (x) {
+        switch x {
         | `update(l) => Js.Undefined.return(animatedEvent(l))
         | `callback((x: callback(unit))) => Js.Undefined.return(x)
         }
       },
     "onPanResponderTerminate": Js.Undefined.from_opt(onPanResponderTerminate),
-    "onPanResponderTerminationRequest":
-      Js.Undefined.from_opt(onPanResponderTerminationRequest),
-    "onShouldBlockNativeResponder":
-      Js.Undefined.from_opt(onShouldBlockNativeResponder)
+    "onPanResponderTerminationRequest": Js.Undefined.from_opt(onPanResponderTerminationRequest),
+    "onShouldBlockNativeResponder": Js.Undefined.from_opt(onShouldBlockNativeResponder)
   });
