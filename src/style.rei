@@ -6,10 +6,12 @@ type pt_pct =
   | Pt(float)
   | Pct(float);
 
-type pt_pct_auto =
+type pt_pct_auto_animated_interpolated =
   | Pt(float)
   | Pct(float)
-  | Auto;
+  | Auto
+  | Animated(AnimatedRe.Value.t)
+  | Interpolated(AnimatedRe.Interpolation.t);
 
 type pt_pct_animated_interpolated =
   | Pt(float)
@@ -124,19 +126,19 @@ type justifyContent =
 
 let justifyContent: justifyContent => styleElement;
 
-let margin: pt_pct_auto => styleElement;
+let margin: pt_pct_auto_animated_interpolated => styleElement;
 
-let marginBottom: pt_pct_auto => styleElement;
+let marginBottom: pt_pct_auto_animated_interpolated => styleElement;
 
-let marginHorizontal: pt_pct_auto => styleElement;
+let marginHorizontal: pt_pct_auto_animated_interpolated => styleElement;
 
-let marginLeft: pt_pct_auto => styleElement;
+let marginLeft: pt_pct_auto_animated_interpolated => styleElement;
 
-let marginRight: pt_pct_auto => styleElement;
+let marginRight: pt_pct_auto_animated_interpolated => styleElement;
 
-let marginTop: pt_pct_auto => styleElement;
+let marginTop: pt_pct_auto_animated_interpolated => styleElement;
 
-let marginVertical: pt_pct_auto => styleElement;
+let marginVertical: pt_pct_auto_animated_interpolated => styleElement;
 
 let maxHeight: pt_pct => styleElement;
 

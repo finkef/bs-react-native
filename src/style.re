@@ -11,17 +11,20 @@ let encode_pt_pct =
   | Pt(value) => Encode.float(value)
   | Pct(value) => Encode.pct(value);
 
-type pt_pct_auto =
+type pt_pct_auto_animated_interpolated =
   | Pt(float)
   | Pct(float)
-  | Auto;
+  | Auto
+  | Animated(AnimatedRe.Value.t)
+  | Interpolated(AnimatedRe.Interpolation.t);
 
-let encode_pt_pct_auto = value =>
-  switch (value) {
+let encode_pt_pct_auto_animated_interpolated =
+  fun
   | Pt(pt) => Encode.float(pt)
   | Pct(pct) => Encode.pct(pct)
   | Auto => Encode.string("auto")
-  };
+  | Animated(value) => Encode.animatedValue(value)
+  | Interpolated(value) => Encode.interpolatedValue(value);
 
 type pt_pct_animated_interpolated =
   | Pt(float)
@@ -232,22 +235,22 @@ let justifyContent = v =>
     },
   );
 
-let margin = value => ("margin", encode_pt_pct_auto(value));
+let margin = value => ("margin", encode_pt_pct_auto_animated_interpolated(value));
 
-let marginBottom = value => ("marginBottom", encode_pt_pct_auto(value));
+let marginBottom = value => ("marginBottom", encode_pt_pct_auto_animated_interpolated(value));
 
 let marginHorizontal = value => (
   "marginHorizontal",
-  encode_pt_pct_auto(value),
+  encode_pt_pct_auto_animated_interpolated(value),
 );
 
-let marginLeft = value => ("marginLeft", encode_pt_pct_auto(value));
+let marginLeft = value => ("marginLeft", encode_pt_pct_auto_animated_interpolated(value));
 
-let marginRight = value => ("marginRight", encode_pt_pct_auto(value));
+let marginRight = value => ("marginRight", encode_pt_pct_auto_animated_interpolated(value));
 
-let marginTop = value => ("marginTop", encode_pt_pct_auto(value));
+let marginTop = value => ("marginTop", encode_pt_pct_auto_animated_interpolated(value));
 
-let marginVertical = value => ("marginVertical", encode_pt_pct_auto(value));
+let marginVertical = value => ("marginVertical", encode_pt_pct_auto_animated_interpolated(value));
 
 let maxHeight = value => ("maxHeight", encode_pt_pct(value));
 
