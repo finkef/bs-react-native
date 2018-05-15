@@ -78,6 +78,7 @@ module Value: {
       unit
     ) =>
     Interpolation.t;
+  let fromInterpolated: Interpolation.t => t;
   let animate: (t, Animation.t, Animation.endCallback) => unit;
   let stopTracking: t => unit;
   let track: t => unit;

@@ -355,6 +355,7 @@ module Value = {
   external modulo : (t, float) => t = "";
   [@bs.module "react-native"] [@bs.scope "Animated"]
   external diffClamp : (t, float, float) => t = "";
+  external fromInterpolated : Interpolation.t => t = "%identity";
   type value = t;
   include
     ValueOperations(
